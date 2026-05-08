@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Badger's End — DM Tool</title>
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --bg:       #1a1510;
+      --bg2:      #24201a;
+      --bg3:      #2e2820;
+      --border:   #4a3f30;
+      --gold:     #c9a84c;
+      --gold-dim: #8a6f30;
+      --cream:    #e8dcc8;
+      --muted:    #9a8a74;
+      --red:      #c05a3a;
+      --green:    #5a8a5a;
+      --blue:     #4a6a9a;
+      --purple:   #7a5a9a;
+      --shadow-color: #2a5a3a;
+      --radius:   8px;
+      --font:     Georgia, 'Times New Roman', serif;
+      --mono:     'Courier New', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: var(--font);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--bg2);
+      border-bottom: 2px solid var(--gold-dim);
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 {
+      font-size: 22px;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+    header .subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .session-badge {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 6px 14px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .session-badge span { color: var(--gold); font-weight: bold; }
+
+    /* ── Tabs ── */
+    nav {
+      display: flex;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      gap: 4px;
+    }
+    nav button {
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 14px;
+      padding: 12px 18px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    nav button:hover { color: var(--cream); }
+    nav button.active {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    /* ── Layout ── */
+    main { padding: 28px 32px; max-width: 1100px; margin: 0 auto; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 18px;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--gold-dim);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--cream);
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 14px;
+      padding: 9px 18px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn:hover { background: var(--border); border-color: var(--gold-dim); }
+    .btn-primary {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+      color: var(--bg);
+      font-weight: bold;
+      font-size: 15px;
+      padding: 11px 28px;
+    }
+    .btn-primary:hover { background: var(--gold); }
+    .btn-sm {
+      font-size: 12px;
+      padding: 5px 12px;
+    }
+    .btn-danger { border-color: var(--red); }
+    .btn-danger:hover { background: var(--red); color: var(--cream); }
+    .btn-success { border-color: var(--green); }
+    .btn-success:hover { background: var(--green); color: var(--cream); }
+
+    /* ── Result boxes ── */
+    .result-box {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold-dim);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-top: 12px;
+      min-height: 52px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .result-box.empty { color: var(--muted); font-style: italic; font-size: 13px; }
+    .result-box .label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .result-box .value { color: var(--cream); }
+    .result-box .flavor { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+    /* ── Grid ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+    @media (max-width: 750px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ── Section Setup tab ── */
+    .big-roll {
+      text-align: center;
+      padding: 28px 0 18px;
+    }
+    .big-roll p { color: var(--muted); font-size: 13px; margin-top: 10px; }
+    .session-results { display: none; margin-top: 10px; }
+    .session-results.visible { display: block; }
+
+    /* ── NPC card ── */
+    .npc-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-top: 14px;
+      display: none;
+    }
+    .npc-card.visible { display: block; }
+    .npc-name {
+      font-size: 20px;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .npc-meta { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+    .npc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .npc-field label {
+      display: block;
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 3px;
+    }
+    .npc-field span { font-size: 14px; color: var(--cream); }
+    .faction-tag {
+      display: inline-block;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 11px;
+      padding: 2px 8px;
+      margin-top: 4px;
+    }
+    .faction-tag.shield { border-color: var(--blue); color: #a0c4ff; }
+    .faction-tag.coin { border-color: var(--green); color: #a8d880; }
+    .faction-tag.light { border-color: #c9a84c; color: #ffe090; }
+    .faction-tag.quill { border-color: #6ab; color: #a0e0f0; }
+    .faction-tag.shadow { border-color: #888; color: #ccc; }
+    .faction-tag.masked { border-color: var(--purple); color: #d0b0ff; }
+    .faction-tag.none { border-color: var(--border); color: var(--muted); }
+
+    /* ── World State tab ── */
+    input[type="text"], textarea, select {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--cream);
+      font-family: var(--font);
+      font-size: 14px;
+      padding: 8px 12px;
+      width: 100%;
+    }
+    input[type="text"]:focus, textarea:focus, select:focus {
+      border-color: var(--gold-dim);
+      outline: none;
+    }
+    textarea { resize: vertical; min-height: 70px; }
+    select option { background: var(--bg3); }
+
+    .thread-list, .npc-log { list-style: none; }
+    .thread-item, .npc-log-item {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .thread-item.resolved { opacity: 0.45; }
+    .thread-text { flex: 1; font-size: 14px; line-height: 1.5; }
+    .thread-meta { font-size: 11px; color: var(--muted); margin-top: 3px; }
+    .thread-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+    .status-badge {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      border: 1px solid;
+      margin-left: 8px;
+    }
+    .status-in-town { border-color: var(--green); color: #a0d0a0; }
+    .status-departed { border-color: var(--muted); color: var(--muted); }
+    .status-anchor { border-color: var(--gold); color: var(--gold); }
+    .status-unknown { border-color: var(--border); color: var(--muted); }
+
+    .renown-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .renown-table th {
+      text-align: left;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .renown-table td { padding: 8px 10px; border-bottom: 1px solid var(--bg3); }
+    .renown-table tr:last-child td { border-bottom: none; }
+    .renown-bar {
+      background: var(--bg);
+      border-radius: 4px;
+      height: 8px;
+      width: 120px;
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+    .renown-fill {
+      background: var(--gold-dim);
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+    .renown-controls { display: flex; gap: 6px; align-items: center; }
+    .renown-num { min-width: 28px; text-align: center; font-size: 14px; color: var(--gold); }
+
+    .add-row { display: flex; gap: 10px; margin-bottom: 14px; }
+    .add-row input, .add-row select { flex: 1; }
+
+    /* ── Separator ── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+    /* ── Dice icon ── */
+    .dice { font-size: 18px; margin-right: 6px; }
+
+    /* ── Session log ── */
+    .log-entry {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 8px;
+    }
+    .log-entry .log-session { font-size: 12px; color: var(--gold-dim); margin-bottom: 4px; }
+    .log-entry .log-body { font-size: 14px; line-height: 1.5; }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: var(--bg3);
+      border: 1px solid var(--gold-dim);
+      border-radius: var(--radius);
+      padding: 10px 18px;
+      font-size: 14px;
+      color: var(--cream);
+      display: none;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>⚑ Badger's End</h1>
+    <div class="subtitle">DM Toolkit — Rotating Campaign System</div>
+  </div>
+  <div class="session-badge">Session <span id="session-num">—</span></div>
+</header>
+
+<nav>
+  <button class="active" onclick="switchTab('setup')">🎲 Session Setup</button>
+  <button onclick="switchTab('events')">🌆 World Events</button>
+  <button onclick="switchTab('npc')">🧙 NPC Generator</button>
+  <button onclick="switchTab('world')">📜 World State</button>
+</nav>
+
+<main>
+
+  <!-- ══ SESSION SETUP ══ -->
+  <div id="tab-setup" class="tab-panel active">
+    <div class="card">
+      <div class="card-title">Pre-Session Roll</div>
+      <p style="color:var(--muted);font-size:14px;margin-bottom:18px;">
+        Roll everything at once to generate today's session seed — a world event, a random NPC walking through the door, and a session hook to run with or ignore.
+      </p>
+      <div class="big-roll">
+        <button class="btn btn-primary" onclick="rollSession()">🎲 Roll the Session</button>
+        <p>Roll after the previous session ends, before the next DM preps.</p>
+      </div>
+      <div class="session-results" id="session-results">
+        <div class="grid-2">
+          <div>
+            <div class="result-box">
+              <span class="label">World Event</span>
+              <span class="value" id="sr-event">—</span>
+            </div>
+            <div class="result-box" style="margin-top:10px;">
+              <span class="label">Inn Event</span>
+              <span class="value" id="sr-inn">—</span>
+            </div>
+          </div>
+          <div>
+            <div class="result-box">
+              <span class="label">Session Hook</span>
+              <span class="value" id="sr-hook">—</span>
+              <div class="flavor" id="sr-hook-flavor"></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:14px;">
+          <div class="card-title" style="margin-bottom:10px;">NPC Walking Through the Door</div>
+          <div id="sr-npc-card" class="npc-card visible"></div>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-success btn-sm" onclick="saveSessionToLog()">✓ Save this session to log</button>
+          <button class="btn btn-sm" onclick="rollSession()">↺ Reroll everything</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ WORLD EVENTS ══ -->
+  <div id="tab-events" class="tab-panel">
+    <div class="grid-2">
+      <div>
+        <div class="card">
+          <div class="card-title">🏙 City Events</div>
+          <button class="btn" onclick="rollTable('city', 'city-result')">Roll d10</button>
+          <div class="result-box empty" id="city-result">Press roll to generate an event.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">⚔ Faction Moves</div>
+          <button class="btn" onclick="rollTable('faction', 'faction-result')">Roll d6</button>
+          <div class="result-box empty" id="faction-result">Press roll to generate a faction move.</div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-title">🍺 Inn Events</div>
+          <button class="btn" onclick="rollTable('inn', 'inn-result')">Roll d10</button>
+          <div class="result-box empty" id="inn-result">Press roll to generate an inn event.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">🌊 Weather & Atmosphere</div>
+          <button class="btn" onclick="rollTable('weather', 'weather-result')">Roll d8</button>
+          <div class="result-box empty" id="weather-result">Press roll to generate weather.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🪝 Session Hooks</div>
+      <button class="btn" onclick="rollTable('hook', 'hook-result')">Roll a Hook</button>
+      <div class="result-box empty" id="hook-result">Press roll to generate a session hook.</div>
+    </div>
+  </div>
+
+  <!-- ══ NPC GENERATOR ══ -->
+  <div id="tab-npc" class="tab-panel">
+    <div class="card">
+      <div class="card-title">Random NPC</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px;">
+        <button class="btn btn-primary" onclick="generateNPC('main-npc')">🎲 Generate NPC</button>
+        <button class="btn btn-sm" onclick="generateNPC('main-npc')">↺ Reroll</button>
+        <button class="btn btn-sm btn-success" onclick="saveNPCToLog()">+ Add to World State</button>
+      </div>
+      <div id="main-npc" class="npc-card"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Disposition & First Impression</div>
+      <button class="btn" onclick="rollTable('disposition', 'disp-result')">Roll Reaction (d12)</button>
+      <div class="result-box empty" id="disp-result">How does this NPC react to the party?</div>
+    </div>
+  </div>
+
+  <!-- ══ WORLD STATE ══ -->
+  <div id="tab-world" class="tab-panel">
+
+    <!-- Open Threads -->
+    <div class="card">
+      <div class="card-title">📌 Open Threads</div>
+      <div class="add-row">
+        <input type="text" id="thread-input" placeholder="Describe an open thread or dangling hook..." onkeydown="if(event.key==='Enter')addThread()">
+        <input type="text" id="thread-session" placeholder="Session #" style="max-width:90px;">
+        <button class="btn btn-sm btn-success" onclick="addThread()">Add</button>
+      </div>
+      <ul class="thread-list" id="thread-list"></ul>
+    </div>
+
+    <!-- NPC Log -->
+    <div class="card">
+      <div class="card-title">🧑 NPC Log</div>
+      <div class="add-row" style="flex-wrap:wrap;">
+        <input type="text" id="npc-log-name" placeholder="NPC name">
+        <input type="text" id="npc-log-desc" placeholder="Brief description">
+        <select id="npc-log-status" style="max-width:140px;">
+          <option value="in-town">In Town</option>
+          <option value="departed">Departed</option>
+          <option value="anchor">Anchor</option>
+          <option value="unknown">Unknown</option>
+        </select>
+        <button class="btn btn-sm btn-success" onclick="addNPCLog()">Add</button>
+      </div>
+      <ul class="npc-log" id="npc-log-list"></ul>
+    </div>
+
+    <!-- Faction Renown -->
+    <div class="card">
+      <div class="card-title">⚜ Faction Renown</div>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:14px;">Track each player's standing with each faction. Click +/- to adjust.</p>
+      <div id="renown-section"></div>
+      <div style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <input type="text" id="player-name-input" placeholder="Add player name..." style="max-width:200px;">
+        <button class="btn btn-sm btn-success" onclick="addPlayer()">Add Player</button>
+      </div>
+    </div>
+
+    <!-- Session Log -->
+    <div class="card">
+      <div class="card-title">📖 Session Log</div>
+      <div class="add-row" style="flex-wrap:wrap;">
+        <input type="text" id="log-session-num" placeholder="Session #" style="max-width:90px;">
+        <input type="text" id="log-dm" placeholder="DM name">
+        <input type="text" id="log-summary" placeholder="Brief summary of what happened...">
+        <button class="btn btn-sm btn-success" onclick="addLogEntry()">Add</button>
+      </div>
+      <div id="session-log-list"></div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:8px;">
+      <button class="btn btn-sm" onclick="exportState()">⬇ Export World State</button>
+      <button class="btn btn-sm btn-danger" onclick="if(confirm('Reset all world state data?'))clearState()">✕ Reset All Data</button>
+    </div>
+
+  </div>
+</main>
+
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+//  DATA TABLES
+// ══════════════════════════════════════════════
+
+const TABLES = {
+  city: [
+    { value: "A trade dispute between two merchant houses has spilled into the streets.", faction: "coin" },
+    { value: "A foreign dignitary has arrived by ship — their purpose in the city is unclear.", faction: null },
+    { value: "A festival is being prepared in the market district. The city feels festive but distracted.", faction: "shield" },
+    { value: "A fire broke out in the warehouse district last night. Cause unknown.", faction: null },
+    { value: "The city guard is conducting increased patrols in the market area — something has them nervous.", faction: "shield" },
+    { value: "A popular local figure has gone missing. Rumors are circulating.", faction: null },
+    { value: "A new ship arrived overnight with unusual cargo. The dockworkers are talking.", faction: "coin" },
+    { value: "A public argument between a Temple official and a city guard officer drew a crowd this morning.", faction: "light" },
+    { value: "Something was found washed up at the docks. The harbor has been quiet about it.", faction: null },
+    { value: "Prices at the market are noticeably higher. Nobody seems to know why yet.", faction: "coin" },
+  ],
+  faction: [
+    { value: "The Shield tightens patrols in the shady quarter — something has spooked the city leader.", faction: "shield" },
+    { value: "The Coin launches a new trade venture that cuts out several smaller merchants.", faction: "coin" },
+    { value: "The Light opens a free clinic in the poor quarter. Unusual donations funded it.", faction: "light" },
+    { value: "The Quill publishes a paper on a topic that makes the city government quietly uncomfortable.", faction: "quill" },
+    { value: "The Shadow moves into a new territory — the merchant guild is not pleased.", faction: "shadow" },
+    { value: "The Masked makes an invisible move. Something shifts in the city, but no one can say what.", faction: "masked" },
+  ],
+  inn: [
+    { value: "A new face has been nursing the same drink for hours, watching the room.", flavor: "Who are they watching?" },
+    { value: "A regular hasn't been in for three days. Mr. H has noticed.", flavor: "Is it nothing, or something?" },
+    { value: "Someone left a sealed package under a table. Nobody has claimed it.", flavor: "Mr. Hoots is sitting next to it." },
+    { value: "A traveling bard has set up in the corner. The music is excellent. A few patrons are crying.", flavor: "Good crying or bad crying?" },
+    { value: "A heated argument breaks out at a back table, then stops abruptly. Both parties leave separately.", flavor: "What was resolved — and how?" },
+    { value: "Mr. Hoots appears on the shoulder of a random player character without warning.", flavor: "He stares. He offers nothing." },
+    { value: "A mysterious letter arrives at the inn addressed to 'whoever is brave enough'.", flavor: "Mr. H slides it across the bar without expression." },
+    { value: "Someone comes in asking after the party by description — not by name.", flavor: "How did they know to look here?" },
+    { value: "The inn is unusually quiet tonight. Mr. H is cleaning the same glass repeatedly.", flavor: "Something has him thinking." },
+    { value: "A pair of city guards come in, not for a drink — they scan the room and leave.", flavor: "They were looking for someone." },
+  ],
+  weather: [
+    "Clear skies — the port is busy, the market is loud, and the day feels ordinary.",
+    "Overcast and grey. The city feels quieter than it should. People move quickly.",
+    "A storm rolling in from the sea — you can smell it. By evening, the streets will be empty.",
+    "Heavy morning fog off the water. Visibility in the port district is near zero.",
+    "Unseasonably warm for the season. Everyone is outside and the city feels restless.",
+    "A cold snap has moved in from the highlands. The fire in the Badger Tavern is doing good business.",
+    "Rain — steady, all day. The shady quarter is unusually quiet when it rains.",
+    "Wind from the sea — strong enough to make conversation difficult on the docks.",
+  ],
+  hook: [
+    { value: "Someone is hiring quietly — no names, no details, very good money.", flavor: "The job offer arrived through three intermediaries." },
+    { value: "A local was found dead in the shady quarter. The guard has ruled it unremarkable. Someone else disagrees.", flavor: "The someone else is sitting at the bar." },
+    { value: "A ship docked last night that wasn't on the harbor manifest. By morning it was gone.", flavor: "Except it left something behind." },
+    { value: "The wizard is in a panic about something they found in their research — and they're not panicking ironically.", flavor: "They need it contained before anyone else finds out." },
+    { value: "A letter arrives at the inn from someone who claims to know where something lost has been found.", flavor: "The letter is addressed to a dead person." },
+    { value: "A merchant is offering triple the going rate for an escort job. The destination is one day's travel. The refusal rate among other groups has been 100%.", flavor: "The merchant won't say why." },
+    { value: "The cleric asks the party to find someone who came to the temple three nights ago and hasn't been seen since.", flavor: "What they confessed is under seal. But the cleric looks worried." },
+    { value: "Something in the poor quarter has people scared to go out after dark. Not robbery — something else.", flavor: "The city guard says there's nothing to investigate." },
+    { value: "The city leader needs something retrieved from outside the city walls — discreetly, without the guard.", flavor: "They won't say what it is until the party agrees." },
+    { value: "An old enemy of someone in the party was spotted in the city. Or someone who looks exactly like them.", flavor: "Mr. H noticed. Said nothing. Waited to see if you'd ask." },
+  ],
+  disposition: [
+    { value: "Hostile — immediately unfriendly or threatening. They don't want to be here.", flavor: "Give them a reason to stay anyway." },
+    { value: "Hostile — immediately unfriendly or threatening. They don't want to be here.", flavor: "Give them a reason to stay anyway." },
+    { value: "Suspicious — guarded, terse, watching everything. They've been burned before.", flavor: "Earn an inch of trust at a time." },
+    { value: "Suspicious — guarded, terse, watching everything. They've been burned before.", flavor: "Earn an inch of trust at a time." },
+    { value: "Neutral — business-like. Neither warm nor cold. Here for a reason.", flavor: "Get to the point and they'll respect you." },
+    { value: "Neutral — business-like. Neither warm nor cold. Here for a reason.", flavor: "Get to the point and they'll respect you." },
+    { value: "Curious — genuinely interested in the party. Asks questions. Leans in.", flavor: "They might be useful. Or they might be a liability." },
+    { value: "Curious — genuinely interested in the party. Asks questions. Leans in.", flavor: "They might be useful. Or they might be a liability." },
+    { value: "Friendly — warm, open, helpful within reason.", flavor: "They like people. Whether that's wisdom is another question." },
+    { value: "Friendly — warm, open, helpful within reason.", flavor: "They like people. Whether that's wisdom is another question." },
+    { value: "Helpful — goes out of their way to assist. Has a reason.", flavor: "What do they want in return?" },
+    { value: "Eager — over-the-top enthusiasm. Very interested in the party specifically.", flavor: "Ulterior motive, or just... like this?" },
+  ]
+};
+
+const NAMES = {
+  first: ["Aldric","Mira","Torvald","Sable","Caius","Fenwick","Isolde","Bram","Vesper","Corvin","Tilda","Ren","Oswin","Lyra","Gareth","Senna","Dusk","Calla","Hadwin","Morrow","Zara","Pell","Ilsa","Colm","Wren","Tallis","Odo","Sylvie","Crest","Nox"],
+  last: ["Ashdown","Merrow","Flint","Vale","Crane","Morrow","Dusk","Holloway","Vane","Croft","Thorn","Bright","Shore","Grimm","Farrow","Reed","Holt","Moss","Wren","Gale","Aldgate","Birch","Cross","Stone","Fell","Marsh","Wraith","Clover","Finch","Drake"]
+};
+
+const RACES = ["Human","Human","Human","Human","Half-Elf","Elf","Dwarf","Halfling","Gnome","Half-Orc","Tiefling","Dragonborn","Tabaxi","Aasimar","Goliath","Kenku"];
+const GENDERS = ["","","",""]; // handled by pronoun neutral names
+
+const PERSONALITIES = [
+  "Nervous and fidgety — keeps checking the door",
+  "Loud and boisterous — wants everyone to know they're here",
+  "Quiet and watchful — hasn't said more than three words",
+  "Charming but evasive — deflects every personal question with a smile",
+  "Earnest and naive — genuinely believes everyone here is trustworthy",
+  "Bitter and sharp-tongued — has opinions and will share them",
+  "Cheerful to a fault — inexplicably upbeat given the situation",
+  "Mysterious and deliberate — every word feels chosen carefully",
+  "Exhausted and haunted — running on empty",
+  "Confident and relaxed — like they own the room"
+];
+
+const PURPOSES = [
+  "Looking for hired help — has a job, needs people",
+  "Passing through on business — the city is a stopover",
+  "Running from something — keeps looking over their shoulder",
+  "Waiting for someone — they're overdue",
+  "Spending their last coin — this is either a celebration or an ending",
+  "Celebrating something they won't explain",
+  "Drowning something they won't explain",
+  "Researching something in the city",
+  "Delivering something they'd rather not be carrying",
+  "Looking for a specific person — they have a name and a description"
+];
+
+const FACTION_HINTS = [
+  { label: "Unaffiliated", cls: "none" },
+  { label: "Unaffiliated", cls: "none" },
+  { label: "Unaffiliated", cls: "none" },
+  { label: "Possibly The Shield", cls: "shield" },
+  { label: "Possibly The Coin", cls: "coin" },
+  { label: "Possibly The Light", cls: "light" },
+  { label: "Possibly The Quill", cls: "quill" },
+  { label: "Possibly The Shadow", cls: "shadow" },
+  { label: "Unknown — hard to read", cls: "none" },
+  { label: "Unknown — hard to read", cls: "none" },
+];
+
+const FACTIONS = ["shield","coin","light","quill","shadow","masked"];
+const FACTION_NAMES = { shield:"The Shield", coin:"The Coin", light:"The Light", quill:"The Quill", shadow:"The Shadow", masked:"The Masked" };
+
+// ══════════════════════════════════════════════
+//  UTILITIES
+// ══════════════════════════════════════════════
+
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function d(n) { return Math.floor(Math.random() * n) + 1; }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2200);
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ══════════════════════════════════════════════
+//  TABLE ROLLS
+// ══════════════════════════════════════════════
+
+function rollTable(table, targetId) {
+  const result = pick(TABLES[table]);
+  const el = document.getElementById(targetId);
+  el.classList.remove('empty');
+  if (typeof result === 'string') {
+    el.innerHTML = `<span class="value">${result}</span>`;
+  } else {
+    const flavor = result.flavor ? `<div class="flavor">${result.flavor}</div>` : '';
+    const faction = result.faction ? `<span class="faction-tag ${result.faction}" style="margin-top:8px;">${FACTION_NAMES[result.faction] || result.faction}</span>` : '';
+    el.innerHTML = `<span class="value">${result.value}</span>${flavor}${faction}`;
+  }
+}
+
+// ══════════════════════════════════════════════
+//  NPC GENERATOR
+// ══════════════════════════════════════════════
+
+let lastNPC = null;
+
+function generateNPC(targetId) {
+  const first = pick(NAMES.first);
+  const last = pick(NAMES.last);
+  const race = pick(RACES);
+  const personality = pick(PERSONALITIES);
+  const purpose = pick(PURPOSES);
+  const factionHint = pick(FACTION_HINTS);
+
+  lastNPC = { name: `${first} ${last}`, race, personality, purpose, faction: factionHint };
+
+  const el = document.getElementById(targetId);
+  el.classList.add('visible');
+  el.innerHTML = buildNPCHTML(lastNPC);
+  return lastNPC;
+}
+
+function buildNPCHTML(npc) {
+  return `
+    <div class="npc-name">${npc.name}</div>
+    <div class="npc-meta">${npc.race}</div>
+    <div class="npc-grid">
+      <div class="npc-field"><label>Personality</label><span>${npc.personality}</span></div>
+      <div class="npc-field"><label>Purpose in the Tavern</label><span>${npc.purpose}</span></div>
+    </div>
+    <div style="margin-top:10px;">
+      <span class="faction-tag ${npc.faction.cls}">${npc.faction.label}</span>
+    </div>
+  `;
+}
+
+function saveNPCToLog() {
+  if (!lastNPC) { showToast('Generate an NPC first.'); return; }
+  const state = loadState();
+  state.npcLog.push({
+    id: Date.now(),
+    name: lastNPC.name,
+    desc: `${lastNPC.race} — ${lastNPC.personality.split('—')[0].trim()}`,
+    status: 'in-town',
+    session: state.sessionNum || '?'
+  });
+  saveState(state);
+  renderWorldState();
+  showToast(`${lastNPC.name} added to NPC log.`);
+}
+
+// ══════════════════════════════════════════════
+//  SESSION ROLL (all-in-one)
+// ══════════════════════════════════════════════
+
+function rollSession() {
+  // World event
+  const worldEvent = pick(TABLES.city);
+  document.getElementById('sr-event').textContent = worldEvent.value;
+
+  // Inn event
+  const innEvent = pick(TABLES.inn);
+  document.getElementById('sr-inn').textContent = innEvent.value;
+
+  // Hook
+  const hook = pick(TABLES.hook);
+  document.getElementById('sr-hook').textContent = hook.value;
+  document.getElementById('sr-hook-flavor').textContent = hook.flavor || '';
+
+  // NPC
+  const npc = generateNPCObj();
+  document.getElementById('sr-npc-card').innerHTML = buildNPCHTML(npc);
+  lastNPC = npc;
+
+  document.getElementById('session-results').classList.add('visible');
+}
+
+function generateNPCObj() {
+  return {
+    name: `${pick(NAMES.first)} ${pick(NAMES.last)}`,
+    race: pick(RACES),
+    personality: pick(PERSONALITIES),
+    purpose: pick(PURPOSES),
+    faction: pick(FACTION_HINTS)
+  };
+}
+
+function saveSessionToLog() {
+  const state = loadState();
+  const num = state.sessionNum ? state.sessionNum + 1 : 1;
+  state.sessionNum = num;
+
+  const event = document.getElementById('sr-event').textContent;
+  const inn = document.getElementById('sr-inn').textContent;
+  const hook = document.getElementById('sr-hook').textContent;
+
+  state.log.unshift({
+    id: Date.now(),
+    session: num,
+    dm: 'TBD',
+    summary: `World: ${event} | Inn: ${inn} | Hook: ${hook}`
+  });
+  saveState(state);
+  renderWorldState();
+  document.getElementById('session-num').textContent = num;
+  showToast(`Session ${num} saved to log.`);
+}
+
+// ══════════════════════════════════════════════
+//  WORLD STATE — localStorage persistence
+// ══════════════════════════════════════════════
+
+function loadState() {
+  try {
+    return JSON.parse(localStorage.getItem('badgers-end-state') || 'null') || defaultState();
+  } catch(e) { return defaultState(); }
+}
+
+function defaultState() {
+  return {
+    sessionNum: 0,
+    threads: [],
+    npcLog: [],
+    players: [],
+    renown: {},
+    log: []
+  };
+}
+
+function saveState(state) {
+  localStorage.setItem('badgers-end-state', JSON.stringify(state));
+}
+
+function clearState() {
+  localStorage.removeItem('badger-tavern-state');
+  renderWorldState();
+  showToast('World state cleared.');
+}
+
+// ── Threads ──
+
+function addThread() {
+  const text = document.getElementById('thread-input').value.trim();
+  const session = document.getElementById('thread-session').value.trim();
+  if (!text) return;
+  const state = loadState();
+  state.threads.push({ id: Date.now(), text, session, resolved: false });
+  saveState(state);
+  document.getElementById('thread-input').value = '';
+  document.getElementById('thread-session').value = '';
+  renderWorldState();
+}
+
+function resolveThread(id) {
+  const state = loadState();
+  const t = state.threads.find(t => t.id === id);
+  if (t) t.resolved = !t.resolved;
+  saveState(state);
+  renderWorldState();
+}
+
+function deleteThread(id) {
+  const state = loadState();
+  state.threads = state.threads.filter(t => t.id !== id);
+  saveState(state);
+  renderWorldState();
+}
+
+// ── NPC Log ──
+
+function addNPCLog() {
+  const name = document.getElementById('npc-log-name').value.trim();
+  const desc = document.getElementById('npc-log-desc').value.trim();
+  const status = document.getElementById('npc-log-status').value;
+  if (!name) return;
+  const state = loadState();
+  state.npcLog.push({ id: Date.now(), name, desc, status });
+  saveState(state);
+  document.getElementById('npc-log-name').value = '';
+  document.getElementById('npc-log-desc').value = '';
+  renderWorldState();
+}
+
+function updateNPCStatus(id, status) {
+  const state = loadState();
+  const n = state.npcLog.find(n => n.id === id);
+  if (n) n.status = status;
+  saveState(state);
+  renderWorldState();
+}
+
+function deleteNPC(id) {
+  const state = loadState();
+  state.npcLog = state.npcLog.filter(n => n.id !== id);
+  saveState(state);
+  renderWorldState();
+}
+
+// ── Players & Renown ──
+
+function addPlayer() {
+  const name = document.getElementById('player-name-input').value.trim();
+  if (!name) return;
+  const state = loadState();
+  if (!state.players.includes(name)) {
+    state.players.push(name);
+    FACTIONS.forEach(f => {
+      if (!state.renown[name]) state.renown[name] = {};
+      state.renown[name][f] = 0;
+    });
+  }
+  saveState(state);
+  document.getElementById('player-name-input').value = '';
+  renderWorldState();
+}
+
+function adjustRenown(player, faction, delta) {
+  const state = loadState();
+  if (!state.renown[player]) state.renown[player] = {};
+  const cur = state.renown[player][faction] || 0;
+  state.renown[player][faction] = Math.max(0, Math.min(15, cur + delta));
+  saveState(state);
+  renderWorldState();
+}
+
+function deletePlayer(name) {
+  const state = loadState();
+  state.players = state.players.filter(p => p !== name);
+  delete state.renown[name];
+  saveState(state);
+  renderWorldState();
+}
+
+// ── Session Log ──
+
+function addLogEntry() {
+  const session = document.getElementById('log-session-num').value.trim();
+  const dm = document.getElementById('log-dm').value.trim();
+  const summary = document.getElementById('log-summary').value.trim();
+  if (!summary) return;
+  const state = loadState();
+  state.log.unshift({ id: Date.now(), session, dm, summary });
+  saveState(state);
+  document.getElementById('log-session-num').value = '';
+  document.getElementById('log-dm').value = '';
+  document.getElementById('log-summary').value = '';
+  renderWorldState();
+}
+
+function deleteLog(id) {
+  const state = loadState();
+  state.log = state.log.filter(l => l.id !== id);
+  saveState(state);
+  renderWorldState();
+}
+
+// ── Render ──
+
+function renderWorldState() {
+  const state = loadState();
+  document.getElementById('session-num').textContent = state.sessionNum || '—';
+
+  // Threads
+  const tl = document.getElementById('thread-list');
+  tl.innerHTML = '';
+  if (!state.threads.length) {
+    tl.innerHTML = '<li style="color:var(--muted);font-size:13px;padding:8px 0;">No open threads yet.</li>';
+  }
+  state.threads.forEach(t => {
+    const li = document.createElement('li');
+    li.className = 'thread-item' + (t.resolved ? ' resolved' : '');
+    li.innerHTML = `
+      <div>
+        <div class="thread-text">${t.text}</div>
+        <div class="thread-meta">${t.session ? 'Session ' + t.session : 'No session'} · ${t.resolved ? '✓ Resolved' : 'Open'}</div>
+      </div>
+      <div class="thread-actions">
+        <button class="btn btn-sm" onclick="resolveThread(${t.id})">${t.resolved ? 'Reopen' : 'Resolve'}</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteThread(${t.id})">✕</button>
+      </div>`;
+    tl.appendChild(li);
+  });
+
+  // NPC Log
+  const nl = document.getElementById('npc-log-list');
+  nl.innerHTML = '';
+  if (!state.npcLog.length) {
+    nl.innerHTML = '<li style="color:var(--muted);font-size:13px;padding:8px 0;">No NPCs logged yet.</li>';
+  }
+  state.npcLog.forEach(n => {
+    const statusLabels = { 'in-town':'In Town','departed':'Departed','anchor':'Anchor','unknown':'Unknown' };
+    const li = document.createElement('li');
+    li.className = 'npc-log-item';
+    li.innerHTML = `
+      <div>
+        <span style="font-size:15px;color:var(--cream);">${n.name}</span>
+        <span class="status-badge status-${n.status}">${statusLabels[n.status]}</span>
+        <div class="thread-meta">${n.desc || ''}</div>
+      </div>
+      <div class="thread-actions">
+        <select style="max-width:130px;font-size:12px;padding:4px 8px;" onchange="updateNPCStatus(${n.id},this.value)">
+          ${['in-town','departed','anchor','unknown'].map(s=>`<option value="${s}"${n.status===s?' selected':''}>${statusLabels[s]}</option>`).join('')}
+        </select>
+        <button class="btn btn-sm btn-danger" onclick="deleteNPC(${n.id})">✕</button>
+      </div>`;
+    nl.appendChild(li);
+  });
+
+  // Renown
+  const rs = document.getElementById('renown-section');
+  rs.innerHTML = '';
+  if (!state.players.length) {
+    rs.innerHTML = '<p style="color:var(--muted);font-size:13px;">Add players above to track renown.</p>';
+  }
+  state.players.forEach(player => {
+    const renown = state.renown[player] || {};
+    const div = document.createElement('div');
+    div.style.marginBottom = '18px';
+    div.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <span style="font-size:15px;color:var(--gold);">${player}</span>
+        <button class="btn btn-sm btn-danger" onclick="deletePlayer('${player}')">Remove</button>
+      </div>
+      <table class="renown-table">
+        <thead><tr><th>Faction</th><th>Renown</th><th>Adjust</th></tr></thead>
+        <tbody>
+          ${FACTIONS.map(f => {
+            const val = renown[f] || 0;
+            const pct = Math.min(100, (val / 15) * 100);
+            return `<tr>
+              <td><span class="faction-tag ${f}" style="font-size:11px;">${FACTION_NAMES[f]}</span></td>
+              <td>
+                <span class="renown-num">${val}</span>
+                <span class="renown-bar"><span class="renown-fill" style="width:${pct}%"></span></span>
+              </td>
+              <td>
+                <div class="renown-controls">
+                  <button class="btn btn-sm" onclick="adjustRenown('${player}','${f}',-1)">−</button>
+                  <button class="btn btn-sm btn-success" onclick="adjustRenown('${player}','${f}',1)">+</button>
+                </div>
+              </td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>`;
+    rs.appendChild(div);
+  });
+
+  // Session log
+  const sl = document.getElementById('session-log-list');
+  sl.innerHTML = '';
+  if (!state.log.length) {
+    sl.innerHTML = '<p style="color:var(--muted);font-size:13px;padding:8px 0;">No sessions logged yet.</p>';
+  }
+  state.log.forEach(entry => {
+    const div = document.createElement('div');
+    div.className = 'log-entry';
+    div.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:start;">
+        <div>
+          <div class="log-session">Session ${entry.session || '?'} ${entry.dm ? '— DM: ' + entry.dm : ''}</div>
+          <div class="log-body">${entry.summary}</div>
+        </div>
+        <button class="btn btn-sm btn-danger" style="flex-shrink:0;margin-left:12px;" onclick="deleteLog(${entry.id})">✕</button>
+      </div>`;
+    sl.appendChild(div);
+  });
+}
+
+// ── Export ──
+
+function exportState() {
+  const state = loadState();
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'badgers-end-world-state.json';
+  a.click();
+  showToast('World state exported.');
+}
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+
+renderWorldState();
+</script>
+</body>
+</html>
