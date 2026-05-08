@@ -1,10 +1,10 @@
 /* ════════════════════════════════════════════════════
-   Badger's End — DM Toolkit Styles
-   D&D Beyond-inspired dark theme
+   Badger's End Styles
    ════════════════════════════════════════════════════ */
 
 /* ── CUSTOM PROPERTIES ──────────────────────────────── */
 :root {
+  /* Colors */
   --bg-darkest: #0d0e12;
   --bg-dark: #14151a;
   --bg-card: #1c1e26;
@@ -26,13 +26,14 @@
   --purple: #8e44ad;
   --shadow-gold: 0 0 20px rgba(200,168,75,0.12);
   --focus-ring: #e4c96a;
+
+  /* Typography variables are defined in typography.css */
 }
 
 /* ── RESET ──────────────────────────────────────────── */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 /* ── ACCESSIBILITY ───────────────────────────────────── */
-/* Visually hidden but readable by screen readers */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -49,8 +50,8 @@
 body {
   background-color: var(--bg-darkest);
   color: var(--text-white);
-  font-family: 'Lato', sans-serif;
-  font-size: 16px;
+  font-family: var(--font-body);
+  font-size: var(--fs-xl);
   min-height: 100vh;
 }
 
@@ -83,33 +84,33 @@ body {
   gap: 2px;
 }
 .header-eyebrow {
-  font-family: 'Cinzel', serif;
-  font-size: 12px;
-  letter-spacing: 3px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--ls-wider);
   text-transform: uppercase;
   color: var(--gold-dim);
 }
 .header-title {
-  font-family: 'Cinzel Decorative', serif;
-  font-size: 28px;
+  font-family: var(--font-serif-display);
+  font-size: var(--fs-5xl);
   font-weight: 700;
   color: var(--gold-light);
   text-shadow: 0 0 30px rgba(200,168,75,0.4), 0 2px 4px rgba(0,0,0,0.8);
-  line-height: 1;
+  line-height: var(--lh-none);
 }
 .header-subtitle {
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  letter-spacing: 2px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wide);
   color: var(--text-muted);
   margin-top: 4px;
 }
 .header-badge {
   background: var(--red);
   color: #fff;
-  font-family: 'Cinzel', serif;
-  font-size: 10px;
-  letter-spacing: 2px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-wide);
   text-transform: uppercase;
   padding: 6px 14px;
   border-radius: 2px;
@@ -125,9 +126,9 @@ body {
   margin-top: 20px;
 }
 .nav-tab {
-  font-family: 'Cinzel', serif;
-  font-size: 13px;
-  letter-spacing: 1.5px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-base);
+  letter-spacing: var(--ls-normal);
   text-transform: uppercase;
   font-weight: 600;
   color: var(--text-muted);
@@ -163,8 +164,8 @@ body {
   margin-bottom: 28px;
 }
 .section-title {
-  font-family: 'Cinzel', serif;
-  font-size: 22px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-4xl);
   font-weight: 700;
   color: var(--gold-light);
   display: flex;
@@ -179,7 +180,7 @@ body {
 }
 .section-desc {
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: var(--fs-base);
   margin-top: 6px;
   font-style: italic;
 }
@@ -227,10 +228,10 @@ body {
 }
 
 .card-title {
-  font-family: 'Cinzel', serif;
-  font-size: 13px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-base);
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: var(--ls-normal);
   text-transform: uppercase;
   color: var(--gold);
   margin-bottom: 16px;
@@ -247,8 +248,8 @@ body {
 /* ── HEADINGS ───────────────────────────────────────── */
 h1, h2, h3 { font-weight: inherit; font-size: inherit; }
 h2.section-title {
-  font-family: 'Cinzel', serif;
-  font-size: 22px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-4xl);
   font-weight: 700;
   color: var(--gold-light);
   display: flex;
@@ -256,10 +257,10 @@ h2.section-title {
   gap: 12px;
 }
 h3.card-title {
-  font-family: 'Cinzel', serif;
-  font-size: 13px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-base);
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: var(--ls-normal);
   text-transform: uppercase;
   color: var(--gold);
   margin-bottom: 16px;
@@ -279,10 +280,10 @@ h3.card-title {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: 'Cinzel', serif;
-  font-size: 13px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-base);
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: var(--ls-normal);
   text-transform: uppercase;
   padding: 12px 22px;
   border-radius: 2px;
@@ -311,12 +312,12 @@ h3.card-title {
   border: 1px solid var(--border-card);
 }
 .btn-ghost:hover { color: var(--text-white); border-color: var(--text-muted); }
-.btn-sm { padding: 7px 14px; font-size: 11px; }
+.btn-sm { padding: 7px 14px; font-size: var(--fs-xs); }
 .btn-danger {
   background: transparent;
   color: var(--red);
   border: 1px solid rgba(192,57,43,0.3);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   padding: 5px 10px;
 }
 .btn-danger:hover { background: rgba(192,57,43,0.15); }
@@ -324,7 +325,7 @@ h3.card-title {
   background: transparent;
   color: var(--green);
   border: 1px solid rgba(39,174,96,0.3);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   padding: 5px 10px;
 }
 .btn-success:hover { background: rgba(39,174,96,0.15); }
@@ -349,18 +350,18 @@ h3.card-title {
 .result-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
 .result-item { }
 .result-label {
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  letter-spacing: 2px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wide);
   text-transform: uppercase;
   color: var(--gold-dim);
   margin-bottom: 4px;
 }
 .result-value {
-  font-size: 15px;
+  font-size: var(--fs-lg);
   color: var(--text-white);
   font-weight: 700;
-  line-height: 1.3;
+  line-height: var(--lh-tight);
 }
 .result-value.gold { color: var(--gold-light); }
 
@@ -371,8 +372,8 @@ input[type="text"], input[type="number"], select, textarea {
   color: var(--text-white);
   padding: 10px 14px;
   border-radius: 3px;
-  font-family: 'Lato', sans-serif;
-  font-size: 15px;
+  font-family: var(--font-body);
+  font-size: var(--fs-lg);
   width: 100%;
   transition: border-color 0.2s;
   outline: none;
@@ -397,9 +398,9 @@ textarea { resize: vertical; min-height: 80px; }
 
 label {
   display: block;
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  letter-spacing: 1.5px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-normal);
   text-transform: uppercase;
   color: var(--text-muted);
   margin-bottom: 6px;
@@ -415,14 +416,14 @@ label {
 }
 .npc-generated.visible { display: block; }
 .npc-name {
-  font-family: 'Cinzel', serif;
-  font-size: 20px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-3xl);
   font-weight: 700;
   color: var(--gold-light);
   margin-bottom: 4px;
 }
 .npc-race {
-  font-size: 14px;
+  font-size: var(--fs-md);
   color: var(--text-muted);
   font-style: italic;
   margin-bottom: 16px;
@@ -430,25 +431,25 @@ label {
 .npc-details { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
 .npc-detail-item { }
 .npc-detail-label {
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  letter-spacing: 2px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wide);
   text-transform: uppercase;
   color: var(--gold-dim);
   margin-bottom: 3px;
 }
-.npc-detail-value { font-size: 14px; color: var(--text-white); }
+.npc-detail-value { font-size: var(--fs-md); color: var(--text-white); }
 
 /* ── WORLD STATE TABLES ──────────────────────────────── */
 .ws-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: var(--fs-md);
 }
 .ws-table th {
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  letter-spacing: 2px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wide);
   text-transform: uppercase;
   color: var(--gold-dim);
   text-align: left;
@@ -469,10 +470,10 @@ label {
   display: inline-block;
   padding: 2px 8px;
   border-radius: 2px;
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 700;
-  font-family: 'Cinzel', serif;
-  letter-spacing: 1px;
+  font-family: var(--font-serif);
+  letter-spacing: var(--ls-tight);
   text-transform: uppercase;
 }
 .badge-active  { background: rgba(39,174,96,0.2);  color: var(--green);    border: 1px solid rgba(39,174,96,0.3); }
@@ -509,8 +510,8 @@ label {
   margin-bottom: 12px;
 }
 .player-name {
-  font-family: 'Cinzel', serif;
-  font-size: 14px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-md);
   font-weight: 700;
   color: var(--gold);
   margin-bottom: 12px;
@@ -523,12 +524,12 @@ label {
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
-  font-size: 13px;
+  font-size: var(--fs-base);
 }
 .faction-label {
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  letter-spacing: 1px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-tight);
   text-transform: uppercase;
   color: var(--text-muted);
   width: 76px;
@@ -536,7 +537,7 @@ label {
 }
 .faction-renown-num {
   color: var(--text-dim);
-  font-size: 12px;
+  font-size: var(--fs-sm);
   width: 26px;
   text-align: right;
   flex-shrink: 0;
@@ -549,7 +550,7 @@ label {
   color: var(--text-muted);
   cursor: pointer;
   border-radius: 2px;
-  font-size: 14px;
+  font-size: var(--fs-md);
   line-height: 1;
   display: flex; align-items: center; justify-content: center;
   transition: all 0.15s;
@@ -566,9 +567,9 @@ label {
   display: inline-block;
   padding: 2px 8px;
   border-radius: 2px;
-  font-size: 10px;
-  font-family: 'Cinzel', serif;
-  letter-spacing: 1px;
+  font-size: var(--fs-2xs);
+  font-family: var(--font-serif);
+  letter-spacing: var(--ls-tight);
   text-transform: uppercase;
   font-weight: 700;
 }
@@ -584,15 +585,15 @@ label {
 .log-entry {
   padding: 12px 16px;
   border-bottom: 1px solid var(--border-card);
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: var(--fs-md);
+  line-height: var(--lh-normal);
 }
 .log-entry:last-child { border-bottom: none; }
 .log-timestamp {
-  font-size: 11px;
+  font-size: var(--fs-xs);
   color: var(--text-dim);
-  font-family: 'Cinzel', serif;
-  letter-spacing: 1px;
+  font-family: var(--font-serif);
+  letter-spacing: var(--ls-tight);
   margin-bottom: 2px;
 }
 
@@ -602,7 +603,7 @@ label {
   padding: 40px 20px;
   color: var(--text-dim);
   font-style: italic;
-  font-size: 14px;
+  font-size: var(--fs-md);
 }
 .empty-state .empty-icon {
   font-size: 32px;
@@ -626,8 +627,8 @@ label {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Cinzel', serif;
-  font-size: 18px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-2xl);
   font-weight: 900;
   color: var(--gold-light);
   text-shadow: 0 0 10px rgba(200,168,75,0.5);
@@ -641,8 +642,8 @@ label {
   border-color: var(--gold);
 }
 .die-label {
-  font-size: 10px;
-  letter-spacing: 1px;
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-tight);
   color: var(--gold-dim);
   font-weight: 400;
   margin-top: 1px;
@@ -686,15 +687,15 @@ label {
   margin-bottom: 10px;
 }
 .session-log-title {
-  font-family: 'Cinzel', serif;
-  font-size: 14px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-md);
   color: var(--gold);
   font-weight: 700;
 }
 .session-log-date {
-  font-size: 12px;
+  font-size: var(--fs-sm);
   color: var(--text-dim);
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-serif);
 }
 
 /* ── IMPORT / EXPORT ────────────────────────────────── */
@@ -711,10 +712,10 @@ label {
   left: 0;
   background: var(--focus-ring);
   color: var(--bg-darkest);
-  font-family: 'Cinzel', serif;
-  font-size: 12px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-sm);
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: var(--ls-tight);
   text-transform: uppercase;
   text-decoration: none;
   padding: 10px 18px;
@@ -729,8 +730,8 @@ label {
   .main { padding: 20px 16px; }
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .result-grid { grid-template-columns: 1fr; }
-  .header-title { font-size: 20px; }
-  .nav-tab { padding: 12px 14px; font-size: 10px; }
+  .header-title { font-size: var(--fs-3xl); }
+  .nav-tab { padding: 12px 14px; font-size: var(--fs-2xs); }
 }
 
 /* ── REDUCED MOTION ─────────────────────────────────── */

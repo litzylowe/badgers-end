@@ -1,0 +1,49 @@
+/* ════════════════════════════════════════════════════
+   Badger's End — Typography Kit
+   ════════════════════════════════════════════════════
+   Edit this file to retheme all type across the tool.
+   Swap font families, adjust the size scale, or tighten
+   letter spacing — style.css references these variables
+   and will update automatically.
+   ════════════════════════════════════════════════════ */
+
+/* ── FONT IMPORT ────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=Lato:wght@300;400;700&display=swap');
+
+:root {
+  /* ── FONT FAMILIES ──────────────────────────────────
+     --font-body         Body text, inputs, prose
+     --font-serif        Headings, labels, nav, buttons
+     --font-serif-display  Main title only              */
+  --font-body:           'Lato', sans-serif;
+  --font-serif:          'Cinzel', serif;
+  --font-serif-display:  'Cinzel Decorative', serif;
+
+  /* ── SIZE SCALE ─────────────────────────────────────
+     Adjust values here to scale the entire UI up or down.
+     Each step is used consistently throughout style.css. */
+  --fs-2xs:  10px;   /* die labels, faction tags         */
+  --fs-xs:   11px;   /* form labels, timestamps          */
+  --fs-sm:   12px;   /* small metadata, dates            */
+  --fs-base: 13px;   /* nav tabs, card titles, buttons   */
+  --fs-md:   14px;   /* body text, table rows            */
+  --fs-lg:   15px;   /* inputs, roll result values       */
+  --fs-xl:   16px;   /* root body size                   */
+  --fs-2xl:  18px;   /* die face numbers                 */
+  --fs-3xl:  20px;   /* NPC names, mobile header         */
+  --fs-4xl:  22px;   /* section titles                   */
+  --fs-5xl:  28px;   /* main header title                */
+
+  /* ── LETTER SPACING ─────────────────────────────────
+     Used with Cinzel for that engraved-text feel.       */
+  --ls-tight:  1px;    /* badges, small labels           */
+  --ls-normal: 1.5px;  /* card titles, buttons           */
+  --ls-wide:   2px;    /* result labels, NPC details     */
+  --ls-wider:  3px;    /* eyebrow / overline text        */
+
+  /* ── LINE HEIGHT ────────────────────────────────────  */
+  --lh-none:    1;      /* display headings               */
+  --lh-tight:   1.3;    /* result values, compact text    */
+  --lh-normal:  1.5;    /* log entries                    */
+  --lh-relaxed: 1.6;    /* descriptive prose              */
+}
