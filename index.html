@@ -1291,6 +1291,7 @@
 <div class="sg-type-row"><div class="sg-sample" style="font-family:var(--font-body);font-size:16px;color:var(--text-muted)">The common room is neutral ground for every faction in the city — warm, unhurried, and always open.</div><div class="sg-meta">Body — Alegreya Sans</div></div>
 </div>
 <p class="art-section-note"><em>Fallbacks</em> — if the Adobe fonts (Modesto / Tiller) fail to load, display type steps down to Cinzel, then system serifs (Palatino / Georgia); body steps down to the system sans stack. Hierarchy and layout hold either way.</p>
+<p class="art-section-note"><em>Loading</em> — set the Adobe web project's <strong>font-display</strong> to <strong>swap</strong> (fonts.adobe.com → the <code>moa5hip</code> project → settings) so the fallback renders immediately while Modesto loads, avoiding a flash of invisible text on slow connections.</p>
 <h2 class="art-section-title">Components</h2>
 <div class="sg-row">
 <button class="roller-btn" type="button">⚄ Roll d100</button>
