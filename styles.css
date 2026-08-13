@@ -1107,6 +1107,7 @@
   header { border-bottom: none; }
 
   /* underline-bar nav (Option A) with an animated, glowing magical underline */
+  .tab-btn { font-family: "modestolite", "Cinzel", serif; }  /* nav-only: lighter Modesto */
   .tab-btn:hover { color: var(--gold-bright); }
   .tab-btn.active { border-bottom-color: transparent; position: relative; }
   .tab-btn.active::after {
