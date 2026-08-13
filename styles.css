@@ -1,19 +1,24 @@
 :root {
-    --bg-deep: #0f0d0a;
-    --bg-panel: #1a1612;
-    --bg-card: #221d17;
-    --bg-card-hover: #2a241c;
-    --border: #3a3128;
-    --border-gold: #6a5330;
-    --gold: #d4a656;
-    --gold-bright: #f0c876;
+    /* ── Master theme: Direction B "Beyond" — near-black · crimson · gold ── */
+    --bg-deep: #0b0b0e;
+    --bg-panel: #141419;
+    --bg-card: #1c1c22;
+    --bg-card-hover: #24242c;
+    --border: #2c2c34;
+    --border-gold: #5a4a2e;
+    --gold: #caa24c;
+    --gold-bright: #e6c876;
     --gold-dim: #9a7d42;
-    --text-white: #ede4d3;
-    --text-muted: #a89a80;
-    --text-dim: #78705f;
-    --red: #b04a3a;
+    --text-white: #eae4d7;
+    --text-muted: #9d978a;
+    --text-dim: #6f6b60;
+    /* crimson is the structural accent; --red kept as an alias so existing rules inherit it */
+    --crimson: #c8402f;
+    --crimson-bright: #e05442;
+    --crimson-dim: #8f2c20;
+    --red: #c8402f;
     --green: #6a8a4a;
-    --shadow: rgba(0,0,0,0.4);
+    --shadow: rgba(0,0,0,0.55);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -1086,3 +1091,128 @@
     .phase-header { flex-wrap: wrap; }
     .task { padding: 10px 12px; }
   }
+
+  /* ============================================================
+     DIRECTION B — structural accents (crimson) + gold filigree.
+     Layered after the base rules so these win by cascade order.
+     ============================================================ */
+  body {
+    background-image:
+      radial-gradient(130% 80% at 85% -6%, rgba(200,64,47,0.10) 0%, transparent 52%),
+      radial-gradient(ellipse at top, rgba(202,162,76,0.045) 0%, transparent 60%),
+      radial-gradient(ellipse at bottom, rgba(200,64,47,0.03) 0%, transparent 60%);
+  }
+  header { border-bottom: 2px solid var(--crimson); }
+
+  /* active tab gets a crimson top edge */
+  .tab-btn.active { border-top: 2px solid var(--crimson); }
+  .tab-btn:hover { color: var(--gold-bright); background: rgba(200,64,47,0.06); }
+
+  /* top-accent bars become crimson */
+  .vision-card::before,
+  .vision-video::before,
+  .events-roller::before {
+    background: linear-gradient(90deg, transparent, var(--crimson), transparent);
+  }
+
+  /* section rules go crimson; headings stay gold */
+  .vision-section h3,
+  .character-section-title,
+  .location-section-title,
+  .art-section-title,
+  .phase-header { border-bottom-color: var(--crimson); }
+
+  /* intro blocks: crimson spine */
+  .vision-lead,
+  .character-intro,
+  .location-intro,
+  .events-intro,
+  .art-intro { border-left-color: var(--crimson); }
+
+  /* card structure spines → crimson (names/labels remain gold) */
+  .character-card { border-left-color: var(--crimson); }
+  .character-card.established { border-left-color: var(--crimson-bright); }
+  .location-card { border-left-color: var(--crimson); }
+
+  /* primary actions → crimson with a thin gold inset */
+  .roller-btn {
+    background: var(--crimson);
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(202,162,76,0.35);
+  }
+  .roller-btn:hover {
+    background: var(--crimson-bright);
+    box-shadow: 0 4px 14px rgba(200,64,47,0.4), inset 0 0 0 1px rgba(202,162,76,0.35);
+  }
+  .btn:hover { background: var(--crimson); color: #fff; }
+
+  /* gold filigree corner on hero cards */
+  .vision-card, .character-card, .events-roller { position: relative; }
+  .vision-card::after,
+  .character-card::after,
+  .events-roller::after {
+    content: "";
+    position: absolute;
+    top: 7px; right: 7px;
+    width: 13px; height: 13px;
+    border-top: 1px solid var(--gold);
+    border-right: 1px solid var(--gold);
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  /* ============================================================
+     DIRECTION A — ".parchment" scoped theme (Illuminated Sourcebook).
+     Add class="parchment" to any .tab-panel (or wrapper) to flip it
+     to the light sourcebook look. Tokens are redefined on the scope;
+     the few gold-literal surfaces are overridden below.
+     ============================================================ */
+  .parchment {
+    --bg-deep: #e3d7ba;
+    --bg-panel: #efe6d0;
+    --bg-card: #f3ecd8;
+    --bg-card-hover: #ece0c4;
+    --border: #cbbb96;
+    --border-gold: #b58a3a;
+    --gold: #7c2a1e;         /* remap "gold" to oxblood so gold headings read as red chapter heads */
+    --gold-bright: #8a2e20;
+    --gold-dim: #9a6a2e;
+    --text-white: #2a2012;
+    --text-muted: #5c4b33;
+    --text-dim: #7d6a4c;
+    --crimson: #7c2a1e;
+    --crimson-bright: #8a2e20;
+    --shadow: rgba(70,52,26,0.22);
+    color: var(--text-white);
+    background:
+      radial-gradient(120% 80% at 50% -10%, #f4ecd8 0%, #e3d7ba 62%, #d7c8a6 100%);
+    padding: clamp(20px, 4vw, 40px);
+    border: 1px solid var(--border-gold);
+    border-radius: 6px;
+    box-shadow: 0 14px 44px rgba(0,0,0,0.5);
+  }
+  /* translucent-gold surfaces re-tinted to oxblood-on-parchment */
+  .parchment .events-table thead { background: rgba(124,42,30,0.10); }
+  .parchment .events-table tr:nth-child(even) td { background: rgba(124,42,30,0.05); }
+  .parchment .events-table tr.highlighted td {
+    background: rgba(124,42,30,0.16) !important;
+    box-shadow: inset 3px 0 0 var(--crimson);
+  }
+  .parchment .vision-lead,
+  .parchment .character-intro,
+  .parchment .location-intro,
+  .parchment .events-intro,
+  .parchment .art-intro {
+    background: linear-gradient(180deg, rgba(124,42,30,0.06) 0%, transparent 100%);
+  }
+  .parchment .character-quote {
+    background: rgba(124,42,30,0.05);
+    color: var(--crimson);
+    border-left-color: var(--crimson);
+  }
+  .parchment .character-card.established {
+    background: linear-gradient(180deg, var(--bg-card) 0%, rgba(124,42,30,0.03) 100%);
+  }
+  .parchment .roller-btn { background: var(--crimson); color: #f5ecd6; }
+  .parchment .roller-btn:hover { background: var(--crimson-bright); }
+  .parchment .roller-result { text-shadow: none; }
