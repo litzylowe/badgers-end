@@ -1129,10 +1129,10 @@
   .events-intro,
   .art-intro { border-left-color: var(--crimson); }
 
-  /* card structure spines → crimson (names/labels remain gold) */
-  .character-card { border-left-color: var(--crimson); }
-  .character-card.established { border-left-color: var(--crimson-bright); }
-  /* location cards: no colored left spine — clean uniform border */
+  /* character + location cards: no colored left spine — clean uniform border */
+  .character-card { border-left: 1px solid var(--border); }
+  .character-card.established,
+  .character-card.placeholder { border-left-color: var(--border); }
   .location-card { border-left: 1px solid var(--border); }
 
   /* primary actions → crimson with a thin gold inset */
