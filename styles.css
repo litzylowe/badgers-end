@@ -1154,11 +1154,19 @@
   .events-intro,
   .art-intro { border-left-color: var(--crimson); }
 
-  /* character + location cards: no colored left spine — clean uniform border */
+  /* character + location + staff cards: no colored left spine — clean uniform border */
   .character-card { border-left: 1px solid var(--border); }
   .character-card.established,
   .character-card.story { border-left-color: var(--border); }
   .location-card { border-left: 1px solid var(--border); }
+  .staff-card { border-left: 1px solid var(--border); }
+
+  /* Bar Staff & Kitchen cards: match the character-card (Story Anchor) format */
+  .staff-card { padding: 18px 22px; }
+  .staff-card .character-card-portrait { flex: 0 0 34%; max-width: 360px; min-width: 200px; }
+  .staff-name { font-size: 20px; color: var(--gold-bright); letter-spacing: 1px; margin-bottom: 2px; }
+  .staff-role { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+  .staff-desc { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
 
   /* primary actions → crimson with a thin gold inset */
   .roller-btn {
