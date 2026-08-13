@@ -1251,10 +1251,64 @@
 </div>
 </div>
 </div><!-- end tab-art -->
+<!-- ═══════════════════════════════════════════════════════
+       TAB: STYLE GUIDE
+  ═══════════════════════════════════════════════════════ -->
+<div aria-labelledby="tab-btn-styleguide" class="tab-panel" hidden="" id="tab-styleguide" role="tabpanel">
+<div class="art-intro">The Badger's End design system — the colours, type, and components behind the site. Reference this when adding content so everything stays on-theme.</div>
+<h2 class="art-section-title">Colour</h2>
+<div class="sg-swatches">
+<div class="sg-swatch"><span class="sg-chip" style="background:#0b0b0e"></span><b>Deep</b><code>#0b0b0e</code></div>
+<div class="sg-swatch"><span class="sg-chip" style="background:#141419"></span><b>Panel</b><code>#141419</code></div>
+<div class="sg-swatch"><span class="sg-chip" style="background:#1c1c22"></span><b>Card</b><code>#1c1c22</code></div>
+<div class="sg-swatch"><span class="sg-chip" style="background:#2c2c34"></span><b>Border</b><code>#2c2c34</code></div>
+<div class="sg-swatch"><span class="sg-chip" style="background:#caa24c"></span><b>Gold</b><code>#caa24c</code></div>
+<div class="sg-swatch"><span class="sg-chip" style="background:#e6c876"></span><b>Gold Bright</b><code>#e6c876</code></div>
+<div class="sg-swatch"><span class="sg-chip" style="background:#9a7d42"></span><b>Gold Dim</b><code>#9a7d42</code></div>
+<div class="sg-swatch"><span class="sg-chip" style="background:#c8402f"></span><b>Crimson</b><code>#c8402f</code></div>
+<div class="sg-swatch"><span class="sg-chip" style="background:#e05442"></span><b>Crimson Bright</b><code>#e05442</code></div>
+<div class="sg-swatch"><span class="sg-chip" style="background:#eae4d7"></span><b>Text</b><code>#eae4d7</code></div>
+<div class="sg-swatch"><span class="sg-chip" style="background:#9d978a"></span><b>Muted</b><code>#9d978a</code></div>
+<div class="sg-swatch"><span class="sg-chip" style="background:#6a8a4a"></span><b>Green</b><code>#6a8a4a</code></div>
+</div>
+<h2 class="art-section-title">Faction Colours</h2>
+<div class="sg-row">
+<span class="faction-badge shield">The Shield</span>
+<span class="faction-badge coin">The Coin</span>
+<span class="faction-badge quill">The Quill</span>
+<span class="faction-badge light">The Light</span>
+<span class="faction-badge shadow">The Shadow</span>
+<span class="faction-badge masked">The Masked</span>
+<span class="faction-badge neutral">Neutral</span>
+</div>
+<h2 class="art-section-title">Typography</h2>
+<div class="sg-type">
+<div class="sg-type-row"><div class="sg-sample" style="font-family:var(--font-wordmark);font-size:38px;text-transform:uppercase;letter-spacing:2px">Badger's End</div><div class="sg-meta">Wordmark — Modesto Poster</div></div>
+<div class="sg-type-row"><div class="sg-sample" style="font-family:var(--font-title);font-size:28px">The Six Quarters</div><div class="sg-meta">Titles &amp; Names — Modesto Text, Title Case</div></div>
+<div class="sg-type-row"><div class="sg-sample" style="font-family:var(--font-display);font-size:18px;text-transform:uppercase;letter-spacing:1.5px">Characters · Locations · Events</div><div class="sg-meta">Nav &amp; Buttons — Modesto Expanded, caps</div></div>
+<div class="sg-type-row"><div class="sg-sample" style="font-family:var(--font-label);font-size:16px;text-transform:uppercase;letter-spacing:1.4px;color:var(--gold)">Race · Mystery · Ideal · Flaw</div><div class="sg-meta">Labels — Tiller</div></div>
+<div class="sg-type-row"><div class="sg-sample" style="font-family:var(--font-body);font-size:16px;color:var(--text-muted)">The common room is neutral ground for every faction in the city — warm, unhurried, and always open.</div><div class="sg-meta">Body — Alegreya Sans</div></div>
+</div>
+<h2 class="art-section-title">Components</h2>
+<div class="sg-row">
+<button class="roller-btn" type="button">⚄ Roll d100</button>
+<button class="btn" type="button">Reset</button>
+<span class="char-badge established">Established</span>
+<span class="char-badge placeholder">Placeholder</span>
+<span class="char-badge faction">Faction</span>
+</div>
+<div class="sg-row">
+<span class="task-badge badge-high">Priority</span>
+<span class="task-badge badge-med">Medium</span>
+<span class="task-badge badge-done">Done</span>
+<span class="roller-result" style="font-size:34px">42</span>
+</div>
+</div><!-- end tab-styleguide -->
 </main>
 <footer>
 <nav class="footer-nav" aria-label="Utility pages">
 <button aria-controls="tab-art" aria-selected="false" class="tab-btn footer-tab" data-tab="art" id="tab-btn-art" onclick="showTab('art')">✿ Art</button>
+<button aria-controls="tab-styleguide" aria-selected="false" class="tab-btn footer-tab" data-tab="styleguide" id="tab-btn-styleguide" onclick="showTab('styleguide')">❖ Style Guide</button>
 <button aria-controls="tab-progress" aria-selected="false" class="tab-btn footer-tab" data-tab="progress" id="tab-btn-progress" onclick="showTab('progress')">⚑ Set Up Progress</button>
 </nav>
 <div class="footer-tagline">Tales from a Mysterious Inn — Badger's End Homebrew</div>
