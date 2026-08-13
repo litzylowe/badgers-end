@@ -47,7 +47,7 @@
   h1 {
     font-family: var(--font-wordmark);
     font-size: 34px;
-    font-weight: 700;
+    font-weight: 400;
     color: var(--gold-bright);
     letter-spacing: 3px;
     text-transform: uppercase;
@@ -329,7 +329,7 @@
     cursor: pointer;
     transition: color 0.2s ease, border-color 0.2s ease;
     margin-bottom: -1px;   /* pull the underline over the nav's baseline rule */
-    font-weight: 500;
+    font-weight: 400;
   }
   .tab-btn:hover {
     color: var(--gold);
@@ -337,7 +337,7 @@
   .tab-btn.active {
     color: var(--gold-bright);
     border-bottom-color: var(--crimson);
-    font-weight: 600;
+    font-weight: 400;
   }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
@@ -879,7 +879,7 @@
     text-transform: uppercase;
     cursor: pointer;
     border-radius: 3px;
-    font-weight: 700;
+    font-weight: 400;
     transition: all 0.2s ease;
     white-space: nowrap;
   }
