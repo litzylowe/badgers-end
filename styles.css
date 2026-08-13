@@ -522,7 +522,7 @@
       max-width: none;
     }
   }
-  .character-card.placeholder { border-left-color: var(--gold-dim); }
+  .character-card.story { border-left-color: var(--gold-dim); }
   .character-card.established {
     border-left-color: var(--gold-bright);
     background: linear-gradient(180deg, var(--bg-card) 0%, rgba(212, 166, 86, 0.025) 100%);
@@ -565,7 +565,7 @@
     white-space: nowrap;
   }
   .char-badge.established { background: rgba(212, 166, 86, 0.18); color: var(--gold-bright); border: 1px solid rgba(212, 166, 86, 0.45); }
-  .char-badge.placeholder { background: rgba(120, 112, 95, 0.12); color: var(--text-muted); border: 1px solid var(--border); }
+  .char-badge.story { background: rgba(120, 112, 95, 0.12); color: var(--text-muted); border: 1px solid var(--border); }
   .char-badge.faction     { background: rgba(106, 138, 74, 0.12); color: #9ab878; border: 1px solid rgba(106, 138, 74, 0.35); }
 
   .character-quote {
@@ -1157,7 +1157,7 @@
   /* character + location cards: no colored left spine — clean uniform border */
   .character-card { border-left: 1px solid var(--border); }
   .character-card.established,
-  .character-card.placeholder { border-left-color: var(--border); }
+  .character-card.story { border-left-color: var(--border); }
   .location-card { border-left: 1px solid var(--border); }
 
   /* primary actions → crimson with a thin gold inset */
