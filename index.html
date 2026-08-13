@@ -34,12 +34,6 @@
 <button aria-controls="tab-rumors" aria-selected="false" class="tab-btn" data-tab="rumors" id="tab-btn-rumors" onclick="showTab('rumors')" role="tab">
       ❝ Rumors
     </button>
-<button aria-controls="tab-art" aria-selected="false" class="tab-btn" data-tab="art" id="tab-btn-art" onclick="showTab('art')" role="tab">
-      ✿ Art
-    </button>
-<button aria-controls="tab-progress" aria-selected="false" class="tab-btn" data-tab="progress" id="tab-btn-progress" onclick="showTab('progress')" role="tab">
-      ⚑ Set Up Progress
-    </button>
 </nav>
 <div aria-labelledby="tab-btn-progress" class="tab-panel" hidden="" id="tab-progress" role="tabpanel">
 <div class="progress-panel">
@@ -1258,7 +1252,11 @@
 </div><!-- end tab-art -->
 </main>
 <footer>
-  Tales from a Mysterious Inn — Badger's End Homebrew
+<nav class="footer-nav" aria-label="Utility pages">
+<button aria-controls="tab-art" aria-selected="false" class="tab-btn footer-tab" data-tab="art" id="tab-btn-art" onclick="showTab('art')">✿ Art</button>
+<button aria-controls="tab-progress" aria-selected="false" class="tab-btn footer-tab" data-tab="progress" id="tab-btn-progress" onclick="showTab('progress')">⚑ Set Up Progress</button>
+</nav>
+<div class="footer-tagline">Tales from a Mysterious Inn — Badger's End Homebrew</div>
 </footer>
 <script src="app.js"></script>
 </body>

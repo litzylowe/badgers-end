@@ -1098,7 +1098,7 @@
       radial-gradient(ellipse at top, rgba(202,162,76,0.045) 0%, transparent 60%),
       radial-gradient(ellipse at bottom, rgba(200,64,47,0.03) 0%, transparent 60%);
   }
-  header { border-bottom: 2px solid var(--crimson); }
+  header { border-bottom: none; }
 
   /* underline-bar nav (Option A) with an animated, glowing magical underline */
   .tab-btn:hover { color: var(--gold-bright); }
@@ -1125,12 +1125,18 @@
     background: linear-gradient(90deg, transparent, var(--crimson), transparent);
   }
 
-  /* section rules go crimson; headings stay gold */
+  /* section titles: no divider rule under them */
   .vision-section h3,
   .character-section-title,
   .location-section-title,
   .art-section-title,
-  .phase-header { border-bottom-color: var(--crimson); }
+  .phase-header { border-bottom: none; padding-bottom: 0; }
+  /* more breathing room between titled content sections */
+  .character-section-title,
+  .location-section-title,
+  .art-section-title { margin-top: 50px; }
+  .vision-section { margin-bottom: 46px; }
+  .phase { margin-bottom: 46px; }
 
   /* intro blocks: crimson spine */
   .vision-lead,
@@ -1227,3 +1233,65 @@
   .parchment .roller-btn { background: var(--crimson); color: #f5ecd6; }
   .parchment .roller-btn:hover { background: var(--crimson-bright); }
   .parchment .roller-result { text-shadow: none; }
+
+  /* ============================================================
+     Footer sub-menu — utility pages (Art, Set Up Progress)
+     ============================================================ */
+  .footer-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    max-width: 440px;
+    margin: 0 auto 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .footer-nav .tab-btn {
+    font-size: 12px;
+    padding: 8px 12px;
+    letter-spacing: 1.2px;
+  }
+  .footer-tagline {
+    color: var(--text-dim);
+    font-style: italic;
+    letter-spacing: 1px;
+  }
+
+  /* ============================================================
+     Magical glow — established character cards + Roll d100 buttons
+     ============================================================ */
+  .character-card.established { border-color: transparent; position: relative; }
+  .character-card.established::after { display: none; } /* drop the plain filigree corner; the glow frame replaces it */
+  .character-card.established::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 5px;
+    padding: 1px;
+    background: linear-gradient(120deg,
+      var(--crimson), var(--gold-bright), var(--crimson-bright), var(--gold), var(--crimson));
+    background-size: 300% 300%;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask-composite: exclude;
+    animation: cardGlow 7s linear infinite;
+    pointer-events: none;
+    opacity: 0.8;
+  }
+  @keyframes cardGlow {
+    from { background-position: 0% 50%; }
+    to   { background-position: 300% 50%; }
+  }
+
+  .roller-btn { animation: btnPulse 3.2s ease-in-out infinite; }
+  @keyframes btnPulse {
+    0%, 100% { box-shadow: inset 0 0 0 1px rgba(202,162,76,0.35), 0 0 10px -3px rgba(200,64,47,0.55); }
+    50%      { box-shadow: inset 0 0 0 1px rgba(230,200,118,0.55), 0 0 18px -1px rgba(224,84,66,0.75); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .character-card.established::before,
+    .roller-btn { animation: none; }
+  }
