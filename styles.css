@@ -412,7 +412,7 @@
 
   /* ─── Vision video ─── */
   .vision-video {
-    margin: 24px 0 8px 0;
+    margin: 24px 0 40px 0;
     border: 1px solid var(--border-gold);
     border-radius: 6px;
     overflow: hidden;
