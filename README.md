@@ -31,8 +31,11 @@ assets/
   Scenes/       # city districts, tavern interior, opening-scene video
   Maps/         # top-down battle map
   Misc/         # logo and other odds and ends
+knowledge-base/ # shared DM reference — rules, factions, NPCs, spells (markdown; not shown on the site)
 .nojekyll       # tells GitHub Pages to serve files as-is (skip Jekyll)
 ```
+
+The `knowledge-base/` is the group's **shared** campaign reference. Individual DMs keep their own private notes separately.
 
 Images are web-optimized (portraits ~600px, scenes ~1000px, JPEG); the opening-scene
 video is a ~1 MB 720p clip. Source-resolution art lives outside the repo.
