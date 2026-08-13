@@ -8,9 +8,9 @@ A collaborative Dungeons & Dragons campaign set in the port city of **Vellmere**
 
 A single-page reference site for the campaign. Every section is a tab:
 
-- **The Vision** — core concept, setting, factions, tone, and how the shared world works across rotating DMs
+- **Getting Started** — core concept, setting, factions, tone, and how the shared world works across rotating DMs
 - **Characters** — profiles for every anchor NPC (established and placeholder), plus the bar staff at Badger's End
-- **Locations** — Vellmere and its six faction-aligned quarters, plus the tavern at the heart of it all
+- **Locations** — Vellmere and its six faction-aligned districts, plus the tavern at the heart of it all
 - **Events** — a d100 table of session-opening events with an interactive roller
 - **Chaos** — an opt-in d100 table for shaking a session up
 - **Weather** — a d100 Weather & Season table, mundane atmosphere to eerie omens
@@ -28,7 +28,7 @@ styles.css      # all styling
 app.js          # tab switching, d100 rollers, task-progress state
 assets/
   Characters/   # anchor NPC + bar-staff portraits
-  Scenes/       # city quarters, tavern interior, opening-scene video
+  Scenes/       # city districts, tavern interior, opening-scene video
   Maps/         # top-down battle map
   Misc/         # logo and other odds and ends
 .nojekyll       # tells GitHub Pages to serve files as-is (skip Jekyll)
