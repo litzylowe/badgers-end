@@ -20,7 +20,9 @@
     --green: #6a8a4a;
     --shadow: rgba(0,0,0,0.55);
     /* typography — Modesto (Adobe) for display, Alegreya Sans for body */
-    --font-display: "modesto-expanded", "Cinzel", serif;
+    --font-display: "modesto-expanded", "Cinzel", serif;  /* UI caps: tabs, buttons */
+    --font-title: "modesto-text", "Cinzel", serif;        /* content titles/names (Title Case) */
+    --font-label: "tiller", "Cinzel", serif;              /* small stylized labels */
     --font-wordmark: "modesto-poster", "Cinzel", serif;
     --font-body: "Alegreya Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   }
@@ -1298,4 +1300,48 @@
   @media (prefers-reduced-motion: reduce) {
     .character-card.established::before,
     .roller-btn { animation: none; }
+  }
+
+  /* ============================================================
+     Typography Direction C — "Storybook":
+       content titles/names/numbers -> Modesto Text (Title Case)
+       small stylized labels        -> Tiller
+     (wordmark = Modesto Poster, nav/buttons = Modesto Expanded caps)
+     ============================================================ */
+  .vision-card h2,
+  .vision-section h3,
+  .character-section-title,
+  .location-section-title,
+  .art-section-title,
+  .phase-title,
+  .character-name,
+  .location-name,
+  .staff-name,
+  .faction-item strong,
+  .art-label,
+  .progress-count,
+  .roller-result,
+  .events-table td:first-child {
+    font-family: var(--font-title);
+    text-transform: none;
+    letter-spacing: 0.01em;
+    font-weight: 700;
+  }
+  .char-badge,
+  .faction-badge,
+  .task-badge,
+  .character-meta strong,
+  .vision-section em,
+  .character-intro em,
+  .character-desc em,
+  .location-note em,
+  .events-intro em,
+  .art-intro em,
+  .roller-label,
+  .events-table th,
+  .progress-label,
+  .phase-num,
+  .phase-progress,
+  .vision-video-caption {
+    font-family: var(--font-label);
   }
