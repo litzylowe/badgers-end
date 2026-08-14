@@ -711,6 +711,99 @@ const STORAGE_KEY = 'badgers-end-project-plan-v2';
     }, 55);
   }
 
+  // ─── Threads: shared session log (Google Sheet + Apps Script) ───
+  // Paste your deployed Apps Script Web App URL (…/exec) between the quotes:
+  const THREADS_ENDPOINT = '';
+
+  function threadsEsc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function renderThreads(list) {
+    const box = document.getElementById('threads-list');
+    if (!box) return;
+    if (!Array.isArray(list) || !list.length) {
+      box.innerHTML = '<div class="thread-empty">No threads yet — be the first to log a session.</div>';
+      return;
+    }
+    list.sort((a, b) => new Date(b.timestamp || b.date || 0) - new Date(a.timestamp || a.date || 0));
+    box.innerHTML = list.map(t => {
+      const meta = [
+        t.session ? 'Session ' + threadsEsc(t.session) : '',
+        t.date ? threadsEsc(t.date) : '',
+        t.dm ? 'DM: ' + threadsEsc(t.dm) : ''
+      ].filter(Boolean).join(' &nbsp;·&nbsp; ');
+      const summary = threadsEsc(t.summary).replace(/\n/g, '<br>');
+      return '<article class="thread-entry">'
+        + (meta ? '<div class="thread-meta">' + meta + '</div>' : '')
+        + '<h3 class="thread-title">' + threadsEsc(t.title || 'Untitled') + '</h3>'
+        + '<div class="thread-summary">' + summary + '</div></article>';
+    }).join('');
+  }
+
+  function loadThreads() {
+    const box = document.getElementById('threads-list');
+    if (!box) return;
+    if (!THREADS_ENDPOINT) {
+      box.innerHTML = '<div class="thread-empty">The Threads log isn\'t connected yet — add your Apps Script URL to <code>THREADS_ENDPOINT</code> in app.js.</div>';
+      return;
+    }
+    box.innerHTML = '<div class="thread-empty">Loading threads…</div>';
+    fetch(THREADS_ENDPOINT)
+      .then(r => r.json())
+      .then(d => renderThreads(Array.isArray(d) ? d : (d.threads || [])))
+      .catch(() => { box.innerHTML = '<div class="thread-empty">Couldn\'t load the log. Check the connection and try again.</div>'; });
+  }
+
+  function submitThread(ev) {
+    ev.preventDefault();
+    const form = ev.target;
+    const status = document.getElementById('thread-status');
+    const btn = form.querySelector('button[type="submit"]');
+    if (!THREADS_ENDPOINT) {
+      status.textContent = 'Not connected yet — add your Apps Script URL to app.js.';
+      status.className = 'thread-status err';
+      return false;
+    }
+    const data = {
+      dm: form.dm.value.trim(),
+      session: form.session.value.trim(),
+      date: form.date.value,
+      title: form.title.value.trim(),
+      summary: form.summary.value.trim(),
+      passphrase: form.passphrase.value
+    };
+    status.textContent = 'Posting…';
+    status.className = 'thread-status';
+    btn.disabled = true;
+    fetch(THREADS_ENDPOINT, { method: 'POST', body: JSON.stringify(data) })
+      .then(r => r.json().catch(() => ({ ok: true })))
+      .then(res => {
+        btn.disabled = false;
+        if (res && res.ok === false) {
+          status.textContent = res.error === 'bad passphrase'
+            ? 'Wrong group passphrase.' : ('Could not post: ' + (res.error || 'unknown error'));
+          status.className = 'thread-status err';
+          return;
+        }
+        status.textContent = 'Thread posted to the log.';
+        status.className = 'thread-status ok';
+        const pass = data.passphrase;
+        try { localStorage.setItem('badgers-end-thread-pass', pass); } catch (e) {}
+        form.reset();
+        form.passphrase.value = pass; // keep the passphrase for the next post
+        loadThreads();
+      })
+      .catch(() => {
+        btn.disabled = false;
+        status.textContent = 'Network hiccup — the thread may still have posted. Refreshing the log…';
+        status.className = 'thread-status err';
+        loadThreads();
+      });
+    return false;
+  }
+
   // Tab switching
   function showTab(name) {
     document.querySelectorAll('.tab-panel').forEach(p => {
@@ -725,6 +818,7 @@ const STORAGE_KEY = 'badgers-end-project-plan-v2';
     const btn   = document.querySelector('.tab-btn[data-tab="' + name + '"]');
     if (panel) { panel.classList.add('active'); panel.removeAttribute('hidden'); }
     if (btn)   { btn.classList.add('active');   btn.setAttribute('aria-selected', 'true'); }
+    if (name === 'threads') loadThreads();
     // Scroll to top of main content on switch
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -735,3 +829,9 @@ const STORAGE_KEY = 'badgers-end-project-plan-v2';
   renderChaos();
   renderWeather();
   renderRumors();
+  // Threads: restore the saved group passphrase so DMs don't retype it
+  try {
+    var _tp = localStorage.getItem('badgers-end-thread-pass');
+    var _pf = document.querySelector('#thread-form [name="passphrase"]');
+    if (_tp && _pf) _pf.value = _tp;
+  } catch (e) {}

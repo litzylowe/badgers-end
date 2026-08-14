@@ -35,6 +35,9 @@
 <button aria-controls="tab-rumors" aria-selected="false" class="tab-btn" data-tab="rumors" id="tab-btn-rumors" onclick="showTab('rumors')" role="tab">
       ❝ Rumors
     </button>
+<button aria-controls="tab-threads" aria-selected="false" class="tab-btn" data-tab="threads" id="tab-btn-threads" onclick="showTab('threads')" role="tab">
+      ✒ Threads
+    </button>
 </nav>
 <div aria-labelledby="tab-btn-progress" class="tab-panel" hidden="" id="tab-progress" role="tabpanel">
 <div class="progress-panel">
@@ -1122,6 +1125,31 @@
 </table>
 </div>
 </div><!-- end tab-rumors -->
+<!-- ═══════════════════════════════════════════════════════
+       TAB: THREADS
+  ═══════════════════════════════════════════════════════ -->
+<div aria-labelledby="tab-btn-threads" class="tab-panel" hidden="" id="tab-threads" role="tabpanel">
+<div class="art-intro">Threads is the campaign's shared session log. After a night at the Badger's End, whoever ran it drops a short summary here — so the next DM (and everyone else) can pick up the threads that were left dangling. Posts sync for the whole group.</div>
+<div class="thread-form-wrap">
+<h2 class="art-section-title">Add a Thread</h2>
+<form class="thread-form" id="thread-form" onsubmit="return submitThread(event)">
+<div class="tf-row">
+<label class="tf-field"><span>DM</span><input name="dm" placeholder="Who ran the session" required type="text"/></label>
+<label class="tf-field tf-narrow"><span>Session</span><input name="session" placeholder="#" type="text"/></label>
+<label class="tf-field tf-narrow"><span>Date</span><input name="date" type="date"/></label>
+</div>
+<label class="tf-field"><span>Title</span><input name="title" placeholder="A name for the night" required type="text"/></label>
+<label class="tf-field"><span>Summary</span><textarea name="summary" placeholder="What happened, who was involved, and what threads were left open…" required rows="5"></textarea></label>
+<div class="tf-row tf-submit">
+<label class="tf-field tf-narrow"><span>Group passphrase</span><input name="passphrase" placeholder="Shared code" required type="password"/></label>
+<button class="roller-btn" type="submit">✒ Post Thread</button>
+</div>
+<div class="thread-status" id="thread-status"></div>
+</form>
+</div>
+<h2 class="art-section-title">The Log</h2>
+<div class="threads-list" id="threads-list"><div class="thread-empty">Loading threads…</div></div>
+</div><!-- end tab-threads -->
 <!-- ═══════════════════════════════════════════════════════
        TAB: ART
   ═══════════════════════════════════════════════════════ -->

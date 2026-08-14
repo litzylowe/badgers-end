@@ -1400,3 +1400,76 @@
     text-transform: uppercase;
   }
   .sg-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 14px; }
+
+  /* ============================================================
+     Threads — shared session log (form + entries)
+     ============================================================ */
+  .thread-form-wrap { margin-bottom: 40px; }
+  .thread-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 22px;
+  }
+  .tf-row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .tf-field { display: flex; flex-direction: column; gap: 5px; flex: 1 1 auto; min-width: 0; }
+  .tf-narrow { flex: 0 0 150px; }
+  .tf-field > span {
+    font-family: var(--font-label);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .thread-form input,
+  .thread-form textarea {
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-white);
+    font-family: var(--font-body);
+    font-size: 15px;
+    padding: 9px 11px;
+    width: 100%;
+  }
+  .thread-form input::placeholder,
+  .thread-form textarea::placeholder { color: var(--text-dim); }
+  .thread-form input:focus,
+  .thread-form textarea:focus {
+    outline: none;
+    border-color: var(--crimson);
+    box-shadow: 0 0 0 2px rgba(200, 64, 47, 0.18);
+  }
+  .thread-form textarea { resize: vertical; line-height: 1.55; }
+  .tf-submit { align-items: flex-end; justify-content: space-between; }
+  .tf-submit .roller-btn { animation: none; }   /* no pulse on the form button */
+  .thread-status { font-size: 13px; min-height: 18px; color: var(--text-muted); }
+  .thread-status.ok  { color: #9ab878; }
+  .thread-status.err { color: var(--crimson-bright); }
+
+  .threads-list { display: flex; flex-direction: column; gap: 14px; }
+  .thread-empty { color: var(--text-dim); font-style: italic; padding: 8px 0; }
+  .thread-entry {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px 20px;
+  }
+  .thread-meta {
+    font-family: var(--font-label);
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 5px;
+  }
+  .thread-title {
+    font-family: var(--font-title);
+    font-size: 20px;
+    color: var(--gold-bright);
+    margin-bottom: 8px;
+  }
+  .thread-summary { color: var(--text-muted); font-size: 15px; line-height: 1.65; }
